@@ -8,6 +8,7 @@
 
 body {
   font-family: 'Space Mono', monospace;
+  font-size: calc(14px + 0.3vw);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -21,4 +22,6 @@ code {
   --lightgreen: #C5E4E7;
   --green: #00474B;
   --greeninvalid: #0C686D;
+  --lightgray: #F3F8FB;
+  --darkgray: #B7C9C9;
 }

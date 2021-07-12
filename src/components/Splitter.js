@@ -22,4 +22,5 @@ max-width: 800px;
 border-radius: 20px;
 padding: 30px;
 display: flex;
+justify-content: space-between;
 `

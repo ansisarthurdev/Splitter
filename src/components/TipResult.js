@@ -13,5 +13,5 @@ const Home = () => {
 export default Home
 
 const Wrapper = styled.div`
-width: 50%;
+width: 45%;
 `
