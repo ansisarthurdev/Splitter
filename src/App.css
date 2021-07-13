@@ -19,9 +19,12 @@ code {
 }
 
 :root {
-  --lightgreen: #C5E4E7;
   --green: #00474B;
   --greeninvalid: #0C686D;
+  --aquagreen: #27C2AE;
+  --lightgreen: #C5E4E7;
+  --hovergreen: #9FE8DF;
+
   --lightgray: #F3F8FB;
   --darkgray: #B7C9C9;
 }

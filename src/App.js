@@ -21,6 +21,7 @@ height: 100vh;
 justify-content: center;
 align-items: center;
 background: var(--lightgreen);
+box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
 h3 {
   letter-spacing: 7px;
