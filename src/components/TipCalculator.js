@@ -1,49 +1,69 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
+
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import PeopleIcon from '@material-ui/icons/People';
 
+import { useDispatch } from 'react-redux';
+import { updateBill } from '../features/billSlice';
+
+import PercentageTipLabel from './PercentageTipLabel';
+
 const TipCalculator = () => {
+
+    const percents = [5, 10, 15, 25, 50, 'Custom'];
+
+    const dispatch = useDispatch();
+
+    const [bill, setBill] = useState(0);
+
+    const handleCheck = (e) => {
+        setBill(e.target.value);      
+    }
+
+    const billInputCheck = () => {
+        const billInput = document.querySelector('#bill');
+
+        if(bill === '0' || bill === 0){
+            billInput.style.color='#B7C9C9';
+            billInput.style.borderColor = 'transparent';
+            //UPDATE REDUX ...
+            dispatch(updateBill(0));
+        } else if(bill < '0' || bill < 0) {
+            billInput.style.color='#E9BBAC';
+            billInput.style.borderColor = '#E9BBAC';
+            //UPDATE REDUX ...
+            dispatch(updateBill(0));
+        } else {
+            billInput.style.color='#00474B';
+            billInput.style.borderColor = '#00474B';
+            //UPDATE REDUX ...
+            dispatch(updateBill(bill));
+        }
+    }
+
+    useEffect(() => {
+        billInputCheck();
+
+        //eslint-disable-next-line
+    }, [bill])
+
     return (
         <Wrapper>
             <h3 className='header'>Bill</h3>
 
             <div className='input-container bill'>
                 <AttachMoneyIcon className='icon'/>
-                <input id='bill' type='number' value='0'/>
+                <input id='bill' type='number' value={bill} onChange={e => handleCheck(e)} min='1' required/>
             </div>
 
             <h3 className='header'>Select Tip %</h3>
             <div className='percentage-tip'>
-                <label>
-                    <input type='radio' name='percentage' value='5' />
-                    <span>5%</span>
-                </label>
-            
-                <label>
-                    <input type='radio' name='percentage' value='5' />
-                    <span>10%</span>
-                </label>
-
-                <label>
-                    <input type='radio' name='percentage' value='5' />
-                    <span>15%</span>
-                </label>
-
-                <label>
-                    <input type='radio' name='percentage' value='5' />
-                    <span>25%</span>
-                </label>
-
-                <label>
-                    <input type='radio' name='percentage' value='5' />
-                    <span>50%</span>
-                </label>
-
-                <label className='custom'>
-                    <input type='radio' name='percentage' value='' />
-                    <span>Custom</span>
-                </label>
+                {percents.map( item => (
+                    <PercentageTipLabel 
+                        percent={item}
+                    /> 
+                ))}
             </div>
 
             <h3 className='header'>Number of People</h3>
@@ -84,6 +104,7 @@ width: 45%;
     outline-color: var(--green);
     text-align: right;
     border-radius: 5px;
+    border: 2px solid transparent;
 
     ::-webkit-outer-spin-button, ::-webkit-inner-spin-button {
         -webkit-appearance: none;
@@ -111,46 +132,6 @@ width: 45%;
     display: flex;
     flex-wrap: wrap;
     margin: 10px 0 45px;
-
-    label {
-        width: 30%;
-        display: flex;
-        flex-grow: 1;
-        flex-wrap: wrap;
-        min-width: 100px;
-
-        input { 
-            display: none; 
-        }
-
-        span {
-            width: 100%;
-            background: var(--green);
-            color: white;
-            padding: 10px;
-            margin: 5px 5px;
-            text-align: center;
-            border-radius: 10px;
-            flex-grow: 1;
-            transition: .2s linear;
-            font-weight: 700;
-
-            :hover {
-                background: var(--hovergreen);
-                color: var(--green);
-                cursor: pointer;
-            }
-        }
-    }
-
-    input[type="radio"]:checked + span{
-        background: var(--aquagreen);
-    }
-
-    .custom {
-        background: var(--lightgray);
-        color: var(--green);
-    }
 }
 
 
