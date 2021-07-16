@@ -156,6 +156,12 @@ width: 45%;
     padding: 0;
     color: gray;
     margin: 0 0 10px 0;
+
+    .people {
+        @media (max-width: 660px) {
+        margin-bottom: 40px;
+        }
+    }
 }
 
 .input-container {
