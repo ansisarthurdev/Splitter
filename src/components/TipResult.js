@@ -1,8 +1,61 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 
+import { useSelector } from 'react-redux';
+
+import { selectBill, selectPercentage, selectPersons } from '../features/billSlice';
 
 const TipResult = () => {
+    const bill = useSelector(selectBill);
+    const percentage = useSelector(selectPercentage);
+    const persons = useSelector(selectPersons);
+
+    const [tipAmount, changeTipAmount] = useState(`0.00`);
+    const [totalAmount, changeTotalAmount] = useState(`0.00`);
+    const [reset, setReset] = useState(true);
+
+    const calcTipAmount = async () => {
+        return new Promise(resolve => {
+            const tip = bill / persons * percentage;
+            const tipDec = `${(Math.round(tip * 100) / 100).toFixed(2)}`;
+            resolve(tipDec)
+            changeTipAmount(tipDec);
+        })
+    }
+
+    const calcTotalAmount = async () => {
+        await calcTipAmount().then(() => {
+            const tipParse = parseFloat(tipAmount);
+
+            const total = bill / persons + tipParse;
+
+            const totalDec = `${(Math.round(total * 100) / 100).toFixed(2)}`;
+            changeTotalAmount(totalDec);
+            setReset(false);
+        });
+
+    }
+
+
+    //checking user inputs
+    useEffect(() => {
+        //check if all inputs are written
+        if(bill !== 0 && percentage !== '' && persons !== ''){
+            calcTipAmount();
+        }
+
+        //eslint-disable-next-line
+    }, [bill, percentage, persons]);
+
+    //waiting for tip to be calculated
+    useEffect(() => {
+        if(tipAmount !== '0.00'){
+            calcTotalAmount()
+        }
+    
+        //eslint-disable-next-line
+    }, [tipAmount])
+
     return (
         <Wrapper>
             <Top>
@@ -12,7 +65,7 @@ const TipResult = () => {
                         <p>/ person</p>
                     </div>
 
-                    <div className='summ amount'>$0.00</div>
+                    <div className='summ amount'>${tipAmount}</div>
                 </div>
 
                 <div className='result'>
@@ -21,12 +74,12 @@ const TipResult = () => {
                         <p>/ person</p>
                     </div>
 
-                    <div className='summ total'>$0.00</div>
+                    <div className='summ total'>${totalAmount}</div>
                 </div>
             </Top>
 
             <Bottom>
-                <button>RESET</button>
+                <button disabled={reset} onClick={() => window.location.reload()}>RESET</button>
             </Bottom>
         </Wrapper>
     )
@@ -42,6 +95,10 @@ padding: 40px 35px 25px;
 display: flex;
 flex-direction: column;
 justify-content: space-between;
+
+@media (max-width: 660px) {
+    width: 100%;
+}
 `
 
 const Top = styled.div`
@@ -95,6 +152,10 @@ button {
     :disabled {
         background: var(--greeninvalid);
         cursor: default;
+    }
+
+    @media (max-width: 660px) {
+        margin-top: 30px;
     }
 }
 `

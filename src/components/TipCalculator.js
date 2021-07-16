@@ -4,10 +4,14 @@ import styled from 'styled-components';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import PeopleIcon from '@material-ui/icons/People';
 
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
+
 import { useDispatch } from 'react-redux';
-import { updateBill } from '../features/billSlice';
+import { updateBill, updatePersons } from '../features/billSlice';
 
 import PercentageTipLabel from './PercentageTipLabel';
+
 
 const TipCalculator = () => {
 
@@ -16,9 +20,26 @@ const TipCalculator = () => {
     const dispatch = useDispatch();
 
     const [bill, setBill] = useState(0);
+    const [persons, setPersons] = useState(0);
+    const [alert, setAlert] = useState('');
 
-    const handleCheck = (e) => {
+    //snackbar
+    const [open, setOpen] = useState(false); 
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
+
+    const [personAlertFix, openPersonAlertFix] = useState(1);
+
+    const handleCheckBill = (e) => {
         setBill(e.target.value);      
+    }
+
+    const handleCheckPersons = (e) => {
+        setPersons(e.target.value);      
     }
 
     const billInputCheck = () => {
@@ -42,11 +63,50 @@ const TipCalculator = () => {
         }
     }
 
+    const PersonsInputCheck = () => {
+        const personsInput = document.querySelector('#people');
+
+        if(persons === '0' || persons === 0){
+            personsInput.style.color='#B7C9C9';
+            personsInput.style.borderColor = 'transparent';
+
+            openPersonAlertFix(2);
+            if(personAlertFix === 2){
+                setOpen(true);
+            }
+            
+            //UPDATE REDUX ...
+            dispatch(updatePersons(''));
+        } else if(persons < '0' || persons < 0) {
+            personsInput.style.color='#E9BBAC';
+            personsInput.style.borderColor = '#E9BBAC';
+            setAlert(`Can't be zero!`)
+            setOpen(true);
+            //UPDATE REDUX ...
+            dispatch(updatePersons(''));
+        } else if (persons % 1 !== 0) {
+            setAlert(`Can't be decimal!`)
+            setOpen(true);
+            //UPDATE REDUX ...
+            dispatch(updatePersons(''));
+        } else {
+            personsInput.style.color='#00474B';
+            personsInput.style.borderColor = '#00474B';
+            //UPDATE REDUX ...
+            dispatch(updatePersons(parseInt(persons)));
+        }
+    }
+
     useEffect(() => {
         billInputCheck();
-
         //eslint-disable-next-line
     }, [bill])
+
+    useEffect(() => {
+        PersonsInputCheck();
+        //eslint-disable-next-line
+    }, [persons])
+
 
     return (
         <Wrapper>
@@ -54,7 +114,7 @@ const TipCalculator = () => {
 
             <div className='input-container bill'>
                 <AttachMoneyIcon className='icon'/>
-                <input id='bill' type='number' value={bill} onChange={e => handleCheck(e)} min='1' required/>
+                <input id='bill' type='number' value={bill} onChange={e => handleCheckBill(e)} min='1' required/>
             </div>
 
             <h3 className='header'>Select Tip %</h3>
@@ -69,8 +129,14 @@ const TipCalculator = () => {
             <h3 className='header'>Number of People</h3>
             <div className='input-container people'>
                 <PeopleIcon className='icon'/>
-                <input id='people' type='number' value='0'/>
+                <input id='people' type='number' value={persons} onChange={e => handleCheckPersons(e)} min='1' step='1' required/>
             </div>
+
+            <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="error">
+                    {alert}
+                </Alert>
+            </Snackbar>
         </Wrapper>
     )
 }
@@ -79,6 +145,10 @@ export default TipCalculator
 
 const Wrapper = styled.div`
 width: 45%;
+
+@media (max-width: 660px) {
+    width: 100%;
+}
 
 .header {
     font-size: 1em;

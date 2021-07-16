@@ -5,7 +5,8 @@ export const billSlice = createSlice({
 
   initialState: {
     bill: '',
-    percentage: ''
+    percentage: '',
+    persons: ''
   },
 
   reducers: {
@@ -14,15 +15,19 @@ export const billSlice = createSlice({
     },
     updatePercentage: (app, action) => {
       app.percentage = action.payload;
+    },
+    updatePersons: (app, action) => {
+      app.persons = action.payload;
     }
 
   },
 
 });
 
-export const { updateBill, updatePercentage } = billSlice.actions;
+export const { updateBill, updatePercentage, updatePersons } = billSlice.actions;
 
-export const selectBill = (app) => app.bill;
-export const selectPercentage = (app) => app.percentage;
+export const selectBill = (state) => state.app.bill;
+export const selectPercentage = (state) => state.app.percentage;
+export const selectPersons = (state) => state.app.persons;
 
 export default billSlice.reducer;

@@ -27,6 +27,9 @@ h3 {
   letter-spacing: 7px;
   color: var(--green);
   margin-bottom: 40px;
+  @media (max-width: 850px) {
+    margin-top: 40px;
+  }
 }
 `
 
