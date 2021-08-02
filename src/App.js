@@ -30,6 +30,10 @@ h3 {
   @media (max-width: 850px) {
     margin-top: 40px;
   }
+
+  @media screen and (max-height: 800px) {
+    margin-top: 150px;
+  }
 }
 `
 

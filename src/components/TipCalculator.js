@@ -150,6 +150,14 @@ width: 45%;
     width: 100%;
 }
 
+@media screen and (max-height: 646px) {
+    margin-top: 60px;
+  }
+
+@media screen and (max-height: 560px) {
+    margin-top: 150px;
+  }
+
 .header {
     font-size: 1em;
     letter-spacing: 1px;
