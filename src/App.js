@@ -17,23 +17,18 @@ function App() {
 const AppContainer = styled.div`
 display: flex;
 flex-direction: column;
-height: 100vh;
 justify-content: center;
 align-items: center;
-background: var(--lightgreen);
-box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
 h3 {
   letter-spacing: 7px;
   color: var(--green);
-  margin-bottom: 40px;
+  margin: 80px 0 40px;
+
   @media (max-width: 850px) {
     margin-top: 40px;
   }
 
-  @media screen and (max-height: 800px) {
-    margin-top: 150px;
-  }
 }
 `
 

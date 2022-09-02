@@ -121,6 +121,7 @@ const TipCalculator = () => {
             <div className='percentage-tip'>
                 {percents.map( item => (
                     <PercentageTipLabel 
+                        key={item}
                         percent={item}
                     /> 
                 ))}
@@ -150,13 +151,6 @@ width: 45%;
     width: 100%;
 }
 
-@media screen and (max-height: 646px) {
-    margin-top: 60px;
-  }
-
-@media screen and (max-height: 560px) {
-    margin-top: 150px;
-  }
 
 .header {
     font-size: 1em;
@@ -164,6 +158,12 @@ width: 45%;
     padding: 0;
     color: gray;
     margin: 0 0 10px 0;
+
+    /*:nth-child(1) {
+        @media (max-width: 660px) {
+            margin-top: 60px;
+        }
+    }*/
 }
 
 .input-container {
@@ -183,6 +183,7 @@ width: 45%;
     text-align: right;
     border-radius: 5px;
     border: 2px solid transparent;
+    height: 45px;
 
     ::-webkit-outer-spin-button, ::-webkit-inner-spin-button {
         -webkit-appearance: none;
@@ -196,7 +197,7 @@ width: 45%;
 
     .icon {
         position: absolute;
-        top: 8px;
+        top: 11px;
         left: 6px;
         color: var(--darkgray);
     }
